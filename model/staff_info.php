@@ -7,7 +7,6 @@ class staff_info{
     public $department;
     public $skill;
     public $hiredDate;
-    public $terminationDate;
     public $office;
     public $education;
     public $language;
@@ -42,7 +41,6 @@ class staff_info{
         $this->department = $row['department'];
         $this->skill = $row['skill'];
         $this->hiredDate = $row['hiredDate'];
-        $this->terminationDate = $row['terminationDate'];
         $this->office = $row['office'];
         $this->education = $row['education'];
         $this->language = $row['language'];
@@ -50,7 +48,7 @@ class staff_info{
     }
     public function create()
     {
-        $querry = "INSERT INTO `staff_info` SET `employeeId`=:employeeId, `jobTitle`=:jobTitle, `jobDescription`=:jobDescription, `department`=:department, `skill`=:skill, `hiredDate`=:hiredDate, `terminationDate`=:terminationDate, `office`=:office, `education`=:education, `language`=:language, `perfomanceReview`=:perfomanceReview" ;
+        $querry = "INSERT INTO `staff_info` SET `employeeId`=:employeeId, `jobTitle`=:jobTitle, `jobDescription`=:jobDescription, `department`=:department, `skill`=:skill, `hiredDate`=:hiredDate,  `office`=:office, `education`=:education, `language`=:language, `perfomanceReview`=:perfomanceReview" ;
 
         $stmt = $this->conn->prepare($querry);
 
@@ -60,7 +58,6 @@ class staff_info{
         $this->department = htmlspecialchars(strip_tags($this->department));
         $this->skill = htmlspecialchars(strip_tags($this->skill));
         $this->hiredDate = htmlspecialchars(strip_tags($this->hiredDate));
-        $this->terminationDate = htmlspecialchars(strip_tags($this->terminationDate));
         $this->office = htmlspecialchars(strip_tags($this->office));
         $this->education = htmlspecialchars(strip_tags($this->education));
         $this->language = htmlspecialchars(strip_tags($this->language));
@@ -72,7 +69,6 @@ class staff_info{
         $stmt->bindParam(':department', $this->department);
         $stmt->bindParam(':skill', $this->skill);
         $stmt->bindParam(':hiredDate', $this->hiredDate);
-        $stmt->bindParam(':terminationDate', $this->terminationDate);
         $stmt->bindParam(':office', $this->office);
         $stmt->bindParam(':education', $this->education);
         $stmt->bindParam(':language', $this->language);
@@ -86,7 +82,7 @@ class staff_info{
     }
     public function update()
     {
-        $querry = "UPDATE `staff_info` SET `jobTitle`=:jobTitle, `jobDescription`=:jobDescription, `department`=:department, `skill`=:skill, `hiredDate`=:hiredDate, `terminationDate`=:terminationDate, `office`=:office, `education`=:education, `language`=:language, `perfomanceReview`=:perfomanceReview WHERE employeeId=:employeeId";
+        $querry = "UPDATE `staff_info` SET `jobTitle`=:jobTitle, `jobDescription`=:jobDescription, `department`=:department, `skill`=:skill, `hiredDate`=:hiredDate, `office`=:office, `education`=:education, `language`=:language, `perfomanceReview`=:perfomanceReview WHERE employeeId=:employeeId";
 
         $stmt = $this->conn->prepare($querry);
         $this->employeeId = htmlspecialchars(strip_tags($this->employeeId));
