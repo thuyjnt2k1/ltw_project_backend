@@ -1,5 +1,6 @@
 <?php
-class staff_info{
+class staff_info
+{
     private $conn;
     public $employeeId;
     public $jobTitle;
@@ -48,37 +49,39 @@ class staff_info{
     }
     public function create()
     {
-        $querry = "INSERT INTO `staff_info` SET `employeeId`=:employeeId, `jobTitle`=:jobTitle, `jobDescription`=:jobDescription, `department`=:department, `skill`=:skill, `hiredDate`=:hiredDate,  `office`=:office, `education`=:education, `language`=:language, `perfomanceReview`=:perfomanceReview" ;
+        $querry = "INSERT INTO `staff_info` SET `employeeId`=:employeeId, `jobTitle`=:jobTitle, `jobDescription`=:jobDescription, `department`=:department, `skill`=:skill, `hiredDate`=:hiredDate,  `office`=:office, `education`=:education, `language`=:language, `perfomanceReview`=:perfomanceReview";
+        try {
+            $stmt = $this->conn->prepare($querry);
 
-        $stmt = $this->conn->prepare($querry);
+            $this->employeeId = htmlspecialchars(strip_tags($this->employeeId));
+            $this->jobTitle = htmlspecialchars(strip_tags($this->jobTitle));
+            $this->jobDescription = htmlspecialchars(strip_tags($this->jobDescription));
+            $this->department = htmlspecialchars(strip_tags($this->department));
+            $this->skill = htmlspecialchars(strip_tags($this->skill));
+            $this->hiredDate = htmlspecialchars(strip_tags($this->hiredDate));
+            $this->office = htmlspecialchars(strip_tags($this->office));
+            $this->education = htmlspecialchars(strip_tags($this->education));
+            $this->language = htmlspecialchars(strip_tags($this->language));
+            $this->perfomanceReview = htmlspecialchars(strip_tags($this->perfomanceReview));
 
-        $this->employeeId = htmlspecialchars(strip_tags($this->employeeId));
-        $this->jobTitle = htmlspecialchars(strip_tags($this->jobTitle));
-        $this->jobDescription = htmlspecialchars(strip_tags($this->jobDescription));
-        $this->department = htmlspecialchars(strip_tags($this->department));
-        $this->skill = htmlspecialchars(strip_tags($this->skill));
-        $this->hiredDate = htmlspecialchars(strip_tags($this->hiredDate));
-        $this->office = htmlspecialchars(strip_tags($this->office));
-        $this->education = htmlspecialchars(strip_tags($this->education));
-        $this->language = htmlspecialchars(strip_tags($this->language));
-        $this->perfomanceReview = htmlspecialchars(strip_tags($this->perfomanceReview));
+            $stmt->bindParam(':employeeId', $this->employeeId);
+            $stmt->bindParam(':jobTitle', $this->jobTitle);
+            $stmt->bindParam(':jobDescription', $this->jobDescription);
+            $stmt->bindParam(':department', $this->department);
+            $stmt->bindParam(':skill', $this->skill);
+            $stmt->bindParam(':hiredDate', $this->hiredDate);
+            $stmt->bindParam(':office', $this->office);
+            $stmt->bindParam(':education', $this->education);
+            $stmt->bindParam(':language', $this->language);
+            $stmt->bindParam(':perfomanceReview', $this->perfomanceReview);
 
-        $stmt->bindParam(':employeeId', $this->employeeId);
-        $stmt->bindParam(':jobTitle', $this->jobTitle);
-        $stmt->bindParam(':jobDescription', $this->jobDescription);
-        $stmt->bindParam(':department', $this->department);
-        $stmt->bindParam(':skill', $this->skill);
-        $stmt->bindParam(':hiredDate', $this->hiredDate);
-        $stmt->bindParam(':office', $this->office);
-        $stmt->bindParam(':education', $this->education);
-        $stmt->bindParam(':language', $this->language);
-        $stmt->bindParam(':perfomanceReview', $this->perfomanceReview);
+            if ($stmt->execute()) {
+                return true;
+            }
 
-        if ($stmt->execute()) {
-            return true;
+        } catch (\PDOException $e) {
+            return false;
         }
-        printf("ERROR %s\n", $stmt->error);
-        return false;
     }
     public function update()
     {
@@ -91,7 +94,6 @@ class staff_info{
         $this->department = htmlspecialchars(strip_tags($this->department));
         $this->skill = htmlspecialchars(strip_tags($this->skill));
         $this->hiredDate = htmlspecialchars(strip_tags($this->hiredDate));
-        $this->terminationDate = htmlspecialchars(strip_tags($this->terminationDate));
         $this->office = htmlspecialchars(strip_tags($this->office));
         $this->education = htmlspecialchars(strip_tags($this->education));
         $this->language = htmlspecialchars(strip_tags($this->language));
@@ -103,12 +105,11 @@ class staff_info{
         $stmt->bindParam(':department', $this->department);
         $stmt->bindParam(':skill', $this->skill);
         $stmt->bindParam(':hiredDate', $this->hiredDate);
-        $stmt->bindParam(':terminationDate', $this->terminationDate);
         $stmt->bindParam(':office', $this->office);
         $stmt->bindParam(':education', $this->education);
         $stmt->bindParam(':language', $this->language);
         $stmt->bindParam(':perfomanceReview', $this->perfomanceReview);
-        
+
 
         if ($stmt->execute()) {
             return true;

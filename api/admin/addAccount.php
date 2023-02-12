@@ -20,29 +20,28 @@ $staff_info = new staff_info($connect);
 $data = json_decode(file_get_contents("php://input"));
 
 $account->username = $data->username;
-$account->password = isset($data->password) ? $data->password: 's123';
+$account->password = isset($data->password) ? $data->password : 's123';
 $account->employeeId = $data->employeeId;
 $account->userType = $data->userType;
 $account->accStatus = $data->accStatus;
 
 
-$staff_info->employeeId = $data->employeeId;
-$staff_info->jobTitle = $data->jobTitle;
-$staff_info->jobDescription = $data->jobDescription;
-$staff_info->department = $data->department;
-$staff_info->skill = $data->skill;
+$staff_info->employeeId = isset($data->employeeId) ? $data->employeeId : null;
+$staff_info->jobTitle = isset($data->jobTitle) ? $data->jobTitle : null;
+$staff_info->jobDescription = isset($data->jobDescription) ? isset($data->jobDescription) : null;
+$staff_info->department = isset($data->department) ? $data->department : null;
+$staff_info->skill = isset($data->skill) ? $data->skill : null;
 date_default_timezone_set(date_default_timezone_get());
 $curentdate = date('Y/m/d', time());
 $staff_info->hiredDate = $curentdate;
-$staff_info->office = $data->office;
-$staff_info->education = $data->education;
-$staff_info->language = $data->language;
-$staff_info->perfomanceReview = $data->perfomanceReview;
+$staff_info->office = isset($data->office) ? $data->office : null;
+$staff_info->education = isset($data->education) ? $data->education : null;
+$staff_info->language = isset($data->language) ? $data->language : null;
+$staff_info->perfomanceReview = isset($data->perfomanceReview) ? $data->perfomanceReview : null;
 
 if ($account->create() && $staff_info->create()) {
     echo json_encode(array('message', 'Create created sucessfully'));
 } else {
     echo json_encode(array('message', 'Create created failed'));
-
 }
 ?>
