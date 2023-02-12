@@ -21,7 +21,6 @@ $staff_info->jobDescription = $data->jobDescription;
 $staff_info->department = $data->department;
 $staff_info->skill = $data->skill;
 $staff_info->hiredDate = $data->hiredDate;
-$staff_info->terminationDate = $data->terminationDate;
 $staff_info->office = $data->office;
 $staff_info->education = $data->education;
 $staff_info->language = $data->language;

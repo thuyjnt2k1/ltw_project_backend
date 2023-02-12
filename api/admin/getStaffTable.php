@@ -15,14 +15,14 @@ $querry = "SELECT a.employeeId, a.username, s.department, a.accStatus, a.userTyp
 $data = json_decode(file_get_contents("php://input"));
 
 $check = 0;
-if(isset($data->employeeId)){
+if(!empty($data->employeeId)){
     if($check == 0){
         $querry = $querry . "WHERE a.employeeId = '" . $data->employeeId . "' ";
         $check = 1;
     }
 }
 
-if(isset($data->username)){
+if(!empty($data->username)){
     if($check == 0){
         $querry = $querry . "WHERE a.username = '" . $data->username . "' ";
     }else{
@@ -31,7 +31,7 @@ if(isset($data->username)){
     $check = 1;
 }
 
-if(isset($data->department)){
+if(!empty($data->department)){
     if($check == 0){
         $querry = $querry . "WHERE s.department = '" . $data->department . "' ";
     }else{
@@ -40,7 +40,16 @@ if(isset($data->department)){
     $check = 1;
 }
 
-if(isset($data->accStatus)){
+if( isset($data->accStatus) && $data->accStatus == 0){
+    if($check == 0){
+        $querry = $querry . "WHERE a.accStatus = '" . $data->accStatus . "' ";
+    }else{
+        $querry = $querry . "AND a.accStatus = '" . $data->accStatus . "' ";
+    }
+    $check = 1;
+}
+
+else if(!empty($data->accStatus)){
     if($check == 0){
         $querry = $querry . "WHERE a.accStatus = '" . $data->accStatus . "' ";
     }else{
@@ -63,12 +72,13 @@ if ($num > 0) {
 
     while ($return = $stmt->fetch(PDO::FETCH_ASSOC)) {
         extract($return);
+        if(empty($username)) continue;
         $return_item = array(
             'employeeId' => $employeeId,
             'username' => $username,
             'department' => $department,
-            'userType' => $userType,
-            'accStatus' => $accStatus,
+            'userType' => $userType==0? 'user': 'admin',
+            'accStatus' => $accStatus==0? 'inactive': 'active',
             'hiredDate' => $hiredDate,
         );
         array_push($return_list['data'], $return_item);

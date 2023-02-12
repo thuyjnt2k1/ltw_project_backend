@@ -25,6 +25,15 @@ class Attendance
         return $stmt;
     }
 
+    public function readForUser()
+    {
+        $querry = "SELECT * FROM attendance WHERE `type` = 0 OR `type` = 1";
+        $stmt = $this->conn->prepare($querry);
+        $stmt->execute();
+        return $stmt;
+    }
+
+
     public function show()
     {
         $querry = "SELECT * FROM attendance WHERE attendanceId=? LIMIT 1 ";

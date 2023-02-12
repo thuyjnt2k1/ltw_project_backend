@@ -18,11 +18,35 @@ if ($num > 0) {
 
     while ($row = $read->fetch(PDO::FETCH_ASSOC)) {
         extract($row);
+        switch ($type) {
+            case '0':
+                $return = 'Chính thức';
+                break;
+            case '1':
+                $return = 'Over time';
+                break;
+            case '2':
+                $return = 'Pending';
+                break;
+            case '3':
+                $return = 'Pending';
+                break;
+            case '4':
+                $return = 'Approved';
+                break;
+            case '5':
+                $return = 'Approved';
+                break;
+            case '6':
+                $return = 'Rejected';
+                break;
+
+        }
         $attendance_item = array(
             'attendanceId' => $attendanceId,
             'type' => $type,
             'outEarlyReason' => $outEarlyReason,
-            'date' => $date,
+            'date' => $return,
             'inTime' => $inTime,
             'outTime' => $outTime,
             'employeeId' => $employeeId,

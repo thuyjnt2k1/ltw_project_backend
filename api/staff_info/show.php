@@ -21,7 +21,6 @@ $staff_info_item = array(
     'department' => $staff_info->department,
     'skill' => $staff_info->skill,
     'hiredDate' => $staff_info->hiredDate,
-    'terminationDate' => $staff_info->terminationDate,
     'office' => $staff_info->office,
     'education' => $staff_info->education,
     'language' => $staff_info->language,

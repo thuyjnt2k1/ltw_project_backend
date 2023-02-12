@@ -25,7 +25,6 @@ if ($num > 0) {
             'department' => $department,
             'skill' => $skill,
             'hiredDate' => $hiredDate,
-            'terminationDate' => $terminationDate,
             'office' => $office,
             'education' => $education,
             'language' => $language,
