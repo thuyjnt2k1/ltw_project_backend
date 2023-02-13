@@ -133,5 +133,67 @@ class Attendance
         printf("ERROR %s\n", $stmt->error);
         return false;
     }
+
+    public function getOne($id, $day, $month, $year) {
+        $sum = 0;
+        if($day == "All") $sum += 2;
+        if($month == "All") $sum += 1;
+        // if($year == "All") $sum += 1;
+        $querry = "SELECT *, TIMESTAMPDIFF(MINUTE, `inTime`,`outTime`) AS `workTime` FROM `attendance` WHERE `employeeId`=$id AND YEAR(`date`) = $year AND `outTime` > '00:00:00'";
+        switch($sum) {
+            case 2: 
+                $querry = $querry." AND MONTH(`date`) = $month";
+                break;
+            case 1: 
+                $querry = $querry." AND DAY(`date`) = $day";
+                break;
+            case 0:  
+                $querry = $querry." AND MONTH(`date`) = $month AND DAY(`date`) = $day";
+                break;
+        }
+
+        $stmt = $this->conn->prepare($querry);
+            
+        if ($stmt->execute()) {
+            return $stmt;
+        }
+        printf("ERROR %s\n", $stmt->error);
+        return false;
+    }
+
+    public function getMy($id) {
+        $res = [];
+        
+        // $querry = "SELECT SUM(TIMESTAMPDIFF(MINUTE, `inTime`,`outTime`)) FROM `attendance` WHERE `employeeId` = $id AND MONTH(`date`) = $month AND YEAR(`date`) = $year";
+        $querry = "SELECT SUM(TIMESTAMPDIFF(MINUTE, `inTime`,`outTime`)) AS `workTime` FROM `attendance` WHERE `employeeId` = $id AND DAY(`date`) = DAY(CURDATE()) AND MONTH(`date`) = MONTH(CURDATE()) AND YEAR(`date`) = YEAR(CURDATE()) AND `outTime` > '00:00:00'";
+        
+        $stmt = $this->conn->prepare($querry);
+            
+        if ($stmt->execute()) {
+            $res['today'] = $stmt;
+        }
+        else {
+            printf("ERROR %s\n", $stmt->error);
+            return false;
+        }
+
+        $querry1 = "SELECT SUM(TIMESTAMPDIFF(MINUTE, `inTime`,`outTime`)) AS `workTime` FROM `attendance` WHERE `employeeId` = $id AND MONTH(`date`) = MONTH(CURDATE()) AND YEAR(`date`) = YEAR(CURDATE()) AND `outTime` > '00:00:00'";
+        
+        $stmt1 = $this->conn->prepare($querry1);
+            
+        if ($stmt1->execute()) {
+            $res['thisMonth'] = $stmt1;
+        }
+        else {
+            printf("ERROR %s\n", $stmt1->error);
+            return false;
+        }
+
+        return $res;
+    }
+
+    function updateIntime($outTime) {
+        
+    }
 }
 ?>
