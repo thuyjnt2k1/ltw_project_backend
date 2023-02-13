@@ -25,9 +25,17 @@ class Attendance
         return $stmt;
     }
 
-    public function readForUser()
+    public function readRequesting()
     {
-        $querry = "SELECT * FROM attendance WHERE `type` = 0 OR `type` = 1";
+        $querry = "SELECT * FROM attendance WHERE type = 2 OR type = 3";
+        $stmt = $this->conn->prepare($querry);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    public function readHandled()
+    {
+        $querry = "SELECT * FROM attendance WHERE `type` = 4 OR `type` = 5 OR `type` = 6";
         $stmt = $this->conn->prepare($querry);
         $stmt->execute();
         return $stmt;

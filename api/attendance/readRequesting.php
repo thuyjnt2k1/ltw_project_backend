@@ -9,7 +9,7 @@ $db = new db();
 $connect = $db->connect();
 
 $attendance = new Attendance($connect);
-$read = $attendance->read();
+$read = $attendance->readRequesting();
 
 $num = $read->rowCount();
 if ($num > 0) {
