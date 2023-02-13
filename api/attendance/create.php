@@ -15,13 +15,13 @@ $attendance = new Attendance($connect);
 
 $data = json_decode(file_get_contents("php://input"));
 
-$attendance->attendanceId = $data->attendanceId;
-$attendance->type = $data->type;
+// $attendance->attendanceId = $data->count;
+$attendance->type = $data->type == "overtime" ? 1 : 0;
 $attendance->outEarlyReason = $data->outEarlyReason;
 $attendance->date = $data->date;
 $attendance->inTime = $data->inTime;
-$attendance->outTime = $data->outTime;
-$attendance->employeeId = $data->employeeId;
+$attendance->outTime = isset($data->outTime) ? $data->outTime : "00:00:00";
+$attendance->employeeId = $data->id;
 
 
 if ($attendance->create()) {
