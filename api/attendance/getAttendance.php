@@ -37,9 +37,11 @@ if($command == "search") {
             extract($row);
             $workHour = round($row['workTime'] / 60);
             $workMinute = $row['workTime'] % 60;
+            $outEarlyReason = $row['outEarlyReason'];
+            $type = $row['type'];
             $attendance_item = array(
                 // 'attendanceId' => $attendanceId,
-                'type' => $type,
+                // 'type' => $type,
                 'outEarlyReason' => $outEarlyReason,
                 'date' => $date,
                 'inTime' => $inTime,
@@ -47,7 +49,9 @@ if($command == "search") {
                 'employeeId' => $employeeId,
     
             );
+            $attendance_item['outEarlyReason'] = $outEarlyReason ? $outEarlyReason : "---";
             $attendance_item['workTime'] = $workHour.":".($workMinute < 10 ? '0'.$workMinute : $workMinute );
+            $attendance_item['type'] = $type ? "OT" : "Official";
             array_push($attendance_list['data'], $attendance_item);
         }
         echo json_encode($attendance_list, JSON_PRETTY_PRINT);
@@ -81,19 +85,18 @@ else if($command == "now") {
     // print_r($res['thisMonth']);
 }
 else if($command == "inToday") {
-    $curTime =strval(date("h:m:s", time()));
+    $curTime = strval(date("h:m:s", time()));
 
-    $querry = "SELECT `inTime` FROM `attendance` WHERE `employeeId` = $id AND DAY(`date`) = DAY(CURDATE()) AND MONTH(`date`) = MONTH(CURDATE()) AND YEAR(`date`) = YEAR(CURDATE()) AND `inTime` < CURTIME() AND `outTime` = '00:00:00' ORDER BY `inTime` DESC LIMIT 1";
+    $querry = "SELECT `inTime`, `outTime` FROM `attendance` WHERE `employeeId` = $id AND DAY(`date`) = DAY(CURDATE()) AND MONTH(`date`) = MONTH(CURDATE()) AND YEAR(`date`) = YEAR(CURDATE()) ORDER BY `inTime` AND `outTime` = '00:00:00' DESC LIMIT 1";
     $stmt = $connect->prepare($querry);
     $stmt->execute();
     $num = $stmt->rowCount();
-    if($num == 0) echo "00:00";
+    if($num == 0) $return =  "00:00";
     else {
-
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        $return = $result['inTime'];
-        echo json_encode($return, JSON_PRETTY_PRINT);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        $return = $row['outTime'];
     }
+        echo json_encode($return, JSON_PRETTY_PRINT);
 }
 
 

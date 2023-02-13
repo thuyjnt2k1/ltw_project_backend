@@ -15,7 +15,11 @@ $attendance = new Attendance($connect);
 
 $data = json_decode(file_get_contents("php://input"));
 
-// $attendance->attendanceId = $data->count;
+// $querry = "SELECT * from `attendance`";
+// $stmt = $connect->prepare($querry);
+// $stmt->execute();
+
+// $attendance->attendanceId = $stmt->rowCount() + 1;
 $attendance->type = $data->type == "overtime" ? 1 : 0;
 $attendance->outEarlyReason = $data->outEarlyReason;
 $attendance->date = $data->date;
@@ -25,9 +29,9 @@ $attendance->employeeId = $data->id;
 
 
 if ($attendance->create()) {
-    echo json_encode(array('message', 'Atandance created sucessfully'));
+    echo json_encode(array('message', '200'));
 } else {
-    echo json_encode(array('message', 'Atandance created failed'));
+    echo json_encode(array('message', '404'));
 
 }
 ?>
