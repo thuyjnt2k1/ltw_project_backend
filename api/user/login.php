@@ -30,7 +30,7 @@ if ($num > 0) {
     while ($return = $run->fetch(PDO::FETCH_ASSOC)) {
         extract($return);
         if ($account->username == $username) {
-            if($accStatus == 0){
+            if ($accStatus == 0) {
                 $result = array(
                     'username' => $username,
                     'response' => '400',
@@ -38,19 +38,24 @@ if ($num > 0) {
                 );
                 echo json_encode($result, JSON_PRETTY_PRINT);
                 die();
-            }
-            else if($account->password == $password){
+            } else if ($account->password == $password) {
+                $id = strval($employeeId);
+                $querry = "SELECT name FROM personal_info WHERE employeeId = $id";
+                $stmt = $connect->prepare($querry);
+                $stmt->execute();
+                $row = $stmt->fetch(PDO::FETCH_ASSOC);
+                $name = $row['name'];
                 $result = array(
                     'username' => $username,
                     'employeeId' => $employeeId,
                     'userType' => $userType == 0 ? 'user' : 'admin',
+                    'name' => $name,
                     'response' => '200',
                     'message' => 'Login successfully!!!'
                 );
                 echo json_encode($result, JSON_PRETTY_PRINT);
                 die();
-            }
-            else{
+            } else {
                 $result = array(
                     'response' => '401',
                     'message' => 'Wrong password!!!'
@@ -61,7 +66,7 @@ if ($num > 0) {
         }
     }
     $result = array(
-        'response' => '40',
+        'response' => '400',
         'message' => 'Account not exsisted!!!'
     );
     echo json_encode($result, JSON_PRETTY_PRINT);
