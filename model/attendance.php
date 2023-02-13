@@ -191,5 +191,9 @@ class Attendance
 
         return $res;
     }
+
+    function updateIntime($outTime) {
+        
+    }
 }
 ?>
